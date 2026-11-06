@@ -33,17 +33,19 @@ Cada agente es un grafo registrado en [`langgraph.json`](langgraph.json), así q
 
 ```mermaid
 flowchart LR
-    U([Usuario]) --> E[extractor<br/><sub>salida estructurada:<br/>nombre, email, tono, sentimiento</sub>]
-    E --> R{Enrutador<br/>de intención}
-    R -- conversación --> C[conversation<br/><sub>RAG con file_search</sub>]
-    R -- agendar cita --> B[booking<br/><sub>herramientas de<br/>disponibilidad y reserva</sub>]
+    U([Usuario]) --> E[Extractor de datos]
+    E --> R{Enrutador}
+    R -- conversación --> C[Conversación con RAG]
+    R -- agendar cita --> B[Agendamiento de citas]
     C --> F([Respuesta])
     B --> F
 ```
 
+- **Extractor**: obtiene nombre, teléfono, email, tono y sentimiento con salida estructurada.
 - **Estado compartido** (`MessagesState`): historial de mensajes y datos del cliente.
 - **Enrutador**: un LLM con salida estructurada (Pydantic) decide el siguiente nodo.
-- **Herramientas**: consulta de disponibilidad y reserva de citas (`@tool`).
+- **Conversación**: responde con RAG sobre un *vector store* (`file_search`).
+- **Agendamiento**: herramientas de disponibilidad y reserva de citas (`@tool`).
 
 ## 🌐 API
 
